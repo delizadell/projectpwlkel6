@@ -1,0 +1,44 @@
+*.log
+.DS_Store
+Thumbs.db
+
+# Environment & rahasia
+.env
+.env.backup
+.env.production
+/auth.json
+
+# Dependensi & build
+/vendor
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/public/fonts-manifest.dev.json
+/storage/*.key
+/storage/pail
+
+# Upload pengguna (file tugas asli tidak boleh masuk Git)
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Database lokal & cache pengujian
+/database/*.sqlite
+.phpunit.result.cache
+/.phpunit.cache
+
+# Editor & alat bantu
+/.vscode
+/.idea
+/.nova
+/.zed
+/.cursor
+/.codex
+/.agents
+/AGENTS.md
+/CLAUDE.md
+/boost.json
+.phpactor.json
+_ide_helper.php
+Homestead.json
+Homestead.yaml
