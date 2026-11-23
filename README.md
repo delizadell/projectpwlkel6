@@ -4,15 +4,6 @@ Aplikasi Web Manajemen Praktikum dan Penilaian Terpadu yang telah dimigrasi dari
 
 ---
 
-## 🏛️ Arsitektur & Teknologi
-
-| Komponen | Spesifikasi | Keterangan |
-|---|---|---|
-| **Backend Framework** | Laravel 11/12 (PHP 8.3+) | Modern Architecture, Eloquent ORM, Service Layer |
-| **Database Engine** | PostgreSQL 12+ / 14 / 15 / 16 | ACID-Compliant, Strict Data Types, Sequences, Cascade Rules |
-| **Frontend UI** | Blade + Tailwind CSS (Dark Theme) | Custom Theme (`#ffcc00` Gold Accent, Plus Jakarta Sans) |
-| **Authentication** | Session-Based via Custom Auth & Middleware | Multi-role (`dosen`, `asisten_dosen`, `mahasiswa`) |
-| **File Storage** | Public Uploads Storage (`uploads/modul`, `uploads/tugas`) | Mendukung PDF, ZIP, RAR, JPG, PNG |
 
 ---
 
