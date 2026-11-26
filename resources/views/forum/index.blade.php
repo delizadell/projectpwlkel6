@@ -7,6 +7,7 @@
     $totalTugas = $posts->where('tipe_post', 'tugas')->count();
 @endphp
 
+<!-- Header Kelas Praktikum -->
 <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs mb-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -22,6 +23,7 @@
             <p class="text-xs text-slate-500 mt-1 max-w-2xl">{{ $matkul->deskripsi ?: 'Forum diskusi materi dan pengumpulan tugas praktikum.' }}</p>
         </div>
 
+        <!-- Kode Gabung -->
         <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center space-x-3 shrink-0">
             <div>
                 <span class="text-[10px] font-semibold text-slate-500 uppercase block">Kode Gabung:</span>
@@ -37,9 +39,10 @@
 </div>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-   
+    <!-- Kolom Kiri: Feed Postingan -->
     <div class="lg:col-span-2 space-y-5">
 
+        <!-- Form Buat Postingan Baru (Hanya Dosen & Asdos) -->
         @if ($user->role === 'dosen' || $user->role === 'asisten_dosen')
             <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
                 <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
@@ -58,6 +61,7 @@
                         @csrf
                         <input type="hidden" name="id_matkul" value="{{ $matkul->id_matkul }}">
 
+                        <!-- Jenis Konten -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1.5">Jenis Konten:</label>
                             <div class="grid grid-cols-3 gap-2">
@@ -82,30 +86,35 @@
                             </div>
                         </div>
 
+                        <!-- Judul -->
                         <div>
                             <label for="judul" class="block text-xs font-semibold text-slate-700 mb-1">Judul Postingan</label>
                             <input type="text" id="judul" name="judul" required placeholder="Contoh: Modul Pertemuan 1 - Konsep OOP" 
                                    class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         </div>
 
+                        <!-- Isi Konten -->
                         <div>
                             <label for="isi" class="block text-xs font-semibold text-slate-700 mb-1">Isi / Petunjuk Praktikum</label>
                             <textarea id="isi" name="isi" rows="3" required placeholder="Tuliskan materi, instruksi tugas, atau pengumuman..." 
                                       class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
                         </div>
 
+                        <!-- File Lampiran -->
                         <div id="wrapperFileLampiran">
                             <label for="file_lampiran" class="block text-xs font-semibold text-slate-700 mb-1">Lampiran File / Modul (PDF / ZIP / Dokumen)</label>
                             <input type="file" id="file_lampiran" name="file_lampiran" 
                                    class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
                         </div>
 
+                        <!-- Deadline (Hanya Tugas) -->
                         <div id="wrapperDeadline" class="hidden">
                             <label for="deadline" class="block text-xs font-semibold text-slate-700 mb-1">Tenggat Waktu Pengumpulan (Deadline)</label>
                             <input type="datetime-local" id="deadline" name="deadline" 
                                    class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                         </div>
 
+                        <!-- Submit Button -->
                         <div class="pt-2 flex justify-end">
                             <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-semibold shadow-xs transition">
                                 Terbitkan ke Forum
@@ -116,6 +125,7 @@
             </div>
         @endif
 
+        <!-- Daftar Postingan Forum -->
         @if ($posts->isEmpty())
             <div class="bg-white rounded-2xl border border-slate-200 p-10 text-center">
                 <div class="w-12 h-12 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center mx-auto mb-3">
@@ -147,7 +157,7 @@
                         </div>
 
                         <div class="flex items-center space-x-2">
-                         
+                            <!-- Tipe Post Badge -->
                             @if ($post->tipe_post === 'tugas')
                                 <span class="px-2 py-0.5 text-[10px] font-bold rounded-full bg-amber-50 text-amber-800 border border-amber-200">Tugas</span>
                             @elseif ($post->tipe_post === 'materi')
@@ -158,7 +168,7 @@
 
                             @if ($user->role === 'dosen' || $user->role === 'asisten_dosen')
                                 <div class="flex items-center space-x-1 pl-1.5 border-l border-slate-200">
-                                
+                                    <!-- Edit Post Button -->
                                     <button type="button" 
                                             onclick="openModalEditPost('{{ $post->id_post }}', @js($post->judul), @js($post->isi), '{{ $post->tipe_post }}', '{{ $post->deadline ? date('Y-m-d\TH:i', strtotime($post->deadline)) : '' }}', '{{ $post->file_lampiran ?? '' }}')"
                                             class="p-1 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition" 
@@ -166,6 +176,7 @@
                                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                                     </button>
 
+                                    <!-- Delete Post Button -->
                                     <form action="{{ route('forum.post.delete', $post->id_post) }}" method="POST" 
                                           onsubmit="return confirm('Apakah Anda yakin ingin menghapus postingan ini? Semua komentar dan berkas terkait akan ikut terhapus.')" 
                                           class="inline">
@@ -181,9 +192,11 @@
                         </div>
                     </div>
 
+                    <!-- Post Body -->
                     <h2 class="text-base font-bold text-slate-900 mb-1.5">{{ $post->judul }}</h2>
                     <p class="text-xs text-slate-700 whitespace-pre-line leading-relaxed">{{ $post->isi }}</p>
 
+                    <!-- File Lampiran -->
                     @if ($post->file_lampiran)
                         <div class="mt-3">
                             <a href="{{ asset('uploads/modul/' . $post->file_lampiran) }}" target="_blank" download 
@@ -195,6 +208,7 @@
                         </div>
                     @endif
 
+                    <!-- Detail & Aksi Khusus Tugas -->
                     @if ($post->tipe_post === 'tugas')
                         <div class="mt-4 p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
                             <!-- Baris Header Tugas: Deadline & Status & Aksi Dosen/Asdos / Tombol Submit Mhs -->
@@ -223,7 +237,7 @@
 
                                 <div class="flex items-center space-x-2">
                                     @if ($user->role === 'dosen' || $user->role === 'asisten_dosen')
-                                     
+                                        <!-- Toggle Kunci Tugas -->
                                         <form action="{{ route('forum.lock.toggle', [$post->id_post, $matkul->id_matkul]) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="px-3 py-1.5 text-xs font-semibold rounded-lg border bg-white hover:bg-slate-50 text-slate-700 transition">
@@ -231,6 +245,7 @@
                                             </button>
                                         </form>
 
+                                        <!-- Link Review Submissions -->
                                         <a href="{{ route('forum.detail_tugas', $post->id_post) }}" 
                                            class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition flex items-center space-x-1.5">
                                             <i class="fa-solid fa-list-check text-[10px]"></i>
@@ -250,6 +265,7 @@
                                 </div>
                             </div>
 
+                            <!-- Khusus Mahasiswa yang SUDAH Mengumpulkan Tugas: Tampilan Lengkap & Catatan Asdos -->
                             @if ($user->role === 'mahasiswa' && isset($post->my_submission) && $post->my_submission)
                                 <div class="space-y-3 pt-1">
                                     <!-- 1. Box Berkas Tugas Mahasiswa -->
@@ -276,6 +292,7 @@
                                             </span>
                                         </div>
 
+                                        <!-- File Link Download & Aksi Edit/Hapus -->
                                         <div class="flex flex-wrap items-center justify-between gap-3 p-2.5 rounded-lg bg-slate-50 border border-slate-200">
                                             <div class="flex items-center space-x-2 min-w-0">
                                                 <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
@@ -327,6 +344,7 @@
                                         @endif
                                     </div>
 
+                                    <!-- 2. Box Hasil Penilaian & Catatan dari Asisten Dosen (Selalu Tampil Jelas) -->
                                     @if ($post->my_submission->nilai !== null || !empty($post->my_submission->catatan_asprak))
                                         <div class="p-4 rounded-xl bg-gradient-to-r from-indigo-50/90 to-blue-50/90 border border-indigo-200 shadow-2xs">
                                             <div class="flex items-center justify-between mb-2 pb-2 border-b border-indigo-100">
@@ -367,6 +385,7 @@
                         </div>
                     @endif
 
+                    <!-- Bagian Komentar -->
                     <div class="mt-4 pt-3 border-t border-slate-100">
                         <button type="button" onclick="toggleComments('comments-{{ $post->id_post }}')" 
                                 class="text-xs font-semibold text-slate-500 hover:text-slate-800 flex items-center space-x-1.5 mb-2">
@@ -403,6 +422,7 @@
                                 </div>
                             @endforeach
 
+                            <!-- Form Tambah Komentar -->
                             <form action="{{ route('forum.comment.add') }}" method="POST" class="flex gap-2 mt-2">
                                 @csrf
                                 <input type="hidden" name="id_post" value="{{ $post->id_post }}">
@@ -419,7 +439,10 @@
             @endforeach
         @endif
     </div>
+
+    <!-- Kolom Kanan: Sidebar Info -->
     <div class="space-y-4">
+        <!-- Statistik Kelas -->
         <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-3">Statistik Forum</h3>
             <div class="space-y-2 text-xs">
@@ -438,6 +461,7 @@
             </div>
         </div>
 
+        <!-- Tim Pengajar -->
         <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
             <h3 class="text-xs font-bold text-slate-800 uppercase mb-3">Tim Pengajar</h3>
             <div class="space-y-3 text-xs">
@@ -459,6 +483,8 @@
         </div>
     </div>
 </div>
+
+<!-- Modal: Kumpulkan Tugas (Khusus Mahasiswa) -->
 <div id="modalSubmitTugas" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 hidden">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -501,6 +527,7 @@
 </div>
 
 @if ($user->role === 'dosen' || $user->role === 'asisten_dosen')
+<!-- Modal: Edit Postingan Forum -->
 <div id="modalEditPost" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 hidden">
     <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
@@ -517,24 +544,28 @@
             @csrf
             @method('PUT')
 
+            <!-- Judul -->
             <div>
                 <label for="edit_judul" class="block text-xs font-semibold text-slate-700 mb-1">Judul Postingan</label>
                 <input type="text" id="edit_judul" name="judul" required 
                        class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
 
+            <!-- Isi Konten -->
             <div>
                 <label for="edit_isi" class="block text-xs font-semibold text-slate-700 mb-1">Isi / Petunjuk Praktikum</label>
                 <textarea id="edit_isi" name="isi" rows="4" required 
                           class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
             </div>
 
+            <!-- Deadline (khusus tugas) -->
             <div id="wrapperEditDeadline" class="hidden">
                 <label for="edit_deadline" class="block text-xs font-semibold text-slate-700 mb-1">Tenggat Waktu Pengumpulan (Deadline)</label>
                 <input type="datetime-local" id="edit_deadline" name="deadline" 
                        class="w-full px-3.5 py-2 text-sm bg-white border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
 
+            <!-- Ganti File Lampiran -->
             <div>
                 <label for="edit_file_lampiran" class="block text-xs font-semibold text-slate-700 mb-1">Ganti File Lampiran (Opsional, Max 20MB)</label>
                 <div id="editCurrentFileInfo" class="text-xs text-slate-500 mb-2 p-2 bg-slate-50 rounded-lg border border-slate-200 hidden">
@@ -560,6 +591,7 @@
 @endif
 
 @if ($user->role === 'mahasiswa')
+<!-- Modal: Edit Tugas Mahasiswa -->
 <div id="modalEditTugas" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs p-4 hidden">
     <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
         <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
