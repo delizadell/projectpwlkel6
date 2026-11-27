@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('asisten_matkul', function (Blueprint $table) {
-            $table->bigIncrements('id_asisten_matkul');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_asisten');
+            $table->increments('id_asisten_matkul');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_asisten');
             $table->string('status', 20)->default('approved'); // 'pending', 'approved', 'rejected'
             $table->timestamp('requested_at')->useCurrent();
 

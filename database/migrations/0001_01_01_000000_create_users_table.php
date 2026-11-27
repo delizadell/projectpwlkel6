@@ -12,19 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id_user');
+            $table->increments('id_user');
             $table->string('username', 50)->unique();
             $table->string('password');
             $table->string('nama_lengkap', 100);
             $table->string('prodi', 100)->nullable();
-            $table->string('role', 20); // 'dosen', 'asisten_dosen', 'mahasiswa'
+            $table->string('role', 100); // 'dosen', 'asisten_dosen', 'mahasiswa', '(mahasiswa, asisten_dosen)'
             $table->rememberToken();
             $table->timestamp('created_at')->useCurrent();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
-            $table->unsignedBigInteger('user_id')->nullable()->index();
+            $table->unsignedInteger('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');

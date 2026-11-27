@@ -9,12 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('mata_kuliah', function (Blueprint $table) {
-            $table->bigIncrements('id_matkul');
+            $table->increments('id_matkul');
             $table->string('kode_matkul', 20)->unique();
             $table->string('nama_matkul', 100);
-            $table->integer('sks');
+            $table->smallInteger('sks');
             $table->string('kode_gabung', 50)->unique();
-            $table->unsignedBigInteger('id_dosen');
+            $table->unsignedInteger('id_dosen');
             $table->text('deskripsi')->nullable();
             $table->timestamp('created_at')->useCurrent();
 

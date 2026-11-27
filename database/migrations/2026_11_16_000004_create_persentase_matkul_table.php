@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('persentase_matkul', function (Blueprint $table) {
-            $table->bigIncrements('id_persentase');
-            $table->unsignedBigInteger('id_matkul')->unique();
+            $table->increments('id_persentase');
+            $table->unsignedInteger('id_matkul')->unique();
             $table->decimal('persentase_absensi', 5, 2)->default(10.00);
             $table->decimal('persentase_tugas', 5, 2)->default(25.00);
             $table->decimal('persentase_quiz', 5, 2)->default(15.00);

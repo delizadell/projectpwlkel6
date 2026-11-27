@@ -10,11 +10,11 @@ return new class extends Migration
     {
         // 1. Absensi
         Schema::create('absensi', function (Blueprint $table) {
-            $table->bigIncrements('id_absensi');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_mahasiswa');
-            $table->integer('jumlah_pertemuan')->default(16);
-            $table->integer('jumlah_hadir')->default(0);
+            $table->increments('id_absensi');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_mahasiswa');
+            $table->smallInteger('jumlah_pertemuan')->default(16);
+            $table->smallInteger('jumlah_hadir')->default(0);
             $table->decimal('nilai_absensi', 5, 2)->default(0.00);
             $table->decimal('nilai_akhir_absensi', 5, 2)->default(0.00);
 
@@ -25,9 +25,9 @@ return new class extends Migration
 
         // 2. Nilai Tugas
         Schema::create('nilai_tugas', function (Blueprint $table) {
-            $table->bigIncrements('id_tugas');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_mahasiswa');
+            $table->increments('id_tugas');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_mahasiswa');
             $table->decimal('rata_rata_tugas', 5, 2)->default(0.00);
 
             $table->foreign('id_matkul')->references('id_matkul')->on('mata_kuliah')->onDelete('cascade');
@@ -37,9 +37,9 @@ return new class extends Migration
 
         // 3. Nilai Quiz
         Schema::create('nilai_quiz', function (Blueprint $table) {
-            $table->bigIncrements('id_quiz');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_mahasiswa');
+            $table->increments('id_quiz');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_mahasiswa');
             $table->decimal('rata_rata_quiz', 5, 2)->default(0.00);
 
             $table->foreign('id_matkul')->references('id_matkul')->on('mata_kuliah')->onDelete('cascade');
@@ -49,9 +49,9 @@ return new class extends Migration
 
         // 4. Nilai UTS
         Schema::create('nilai_uts', function (Blueprint $table) {
-            $table->bigIncrements('id_uts');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_mahasiswa');
+            $table->increments('id_uts');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_mahasiswa');
             $table->decimal('nilai_uts', 5, 2)->default(0.00);
 
             $table->foreign('id_matkul')->references('id_matkul')->on('mata_kuliah')->onDelete('cascade');
@@ -61,9 +61,9 @@ return new class extends Migration
 
         // 5. Nilai UAS
         Schema::create('nilai_uas', function (Blueprint $table) {
-            $table->bigIncrements('id_uas');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_mahasiswa');
+            $table->increments('id_uas');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_mahasiswa');
             $table->decimal('nilai_uas', 5, 2)->default(0.00);
 
             $table->foreign('id_matkul')->references('id_matkul')->on('mata_kuliah')->onDelete('cascade');
@@ -73,9 +73,9 @@ return new class extends Migration
 
         // 6. Nilai Akhir Total Mahasiswa
         Schema::create('nilai_akhir_mahasiswa', function (Blueprint $table) {
-            $table->bigIncrements('id_nilai');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_mahasiswa');
+            $table->increments('id_nilai');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_mahasiswa');
             $table->decimal('nilai_akhir_total', 5, 2)->default(0.00);
             $table->string('huruf_matkul', 2);
             $table->decimal('bobot_matkul', 3, 2);

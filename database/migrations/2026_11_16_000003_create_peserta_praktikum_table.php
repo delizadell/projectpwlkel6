@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('peserta_praktikum', function (Blueprint $table) {
-            $table->bigIncrements('id_peserta');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_mahasiswa');
+            $table->increments('id_peserta');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_mahasiswa');
             $table->timestamp('joined_at')->useCurrent();
 
             $table->foreign('id_matkul')->references('id_matkul')->on('mata_kuliah')->onDelete('cascade');

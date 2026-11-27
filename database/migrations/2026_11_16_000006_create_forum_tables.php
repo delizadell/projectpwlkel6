@@ -10,9 +10,9 @@ return new class extends Migration
     {
         // 1. Postingan Forum
         Schema::create('forum_postingan', function (Blueprint $table) {
-            $table->bigIncrements('id_post');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_author');
+            $table->increments('id_post');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_author');
             $table->string('tipe_post', 20); // 'pengumuman', 'materi', 'tugas'
             $table->string('judul', 200);
             $table->text('isi');
@@ -27,9 +27,9 @@ return new class extends Migration
 
         // 2. Komentar Forum
         Schema::create('forum_komentar', function (Blueprint $table) {
-            $table->bigIncrements('id_komentar');
-            $table->unsignedBigInteger('id_post');
-            $table->unsignedBigInteger('id_user');
+            $table->increments('id_komentar');
+            $table->unsignedInteger('id_post');
+            $table->unsignedInteger('id_user');
             $table->text('isi_komentar');
             $table->timestamp('created_at')->useCurrent();
 
@@ -39,9 +39,9 @@ return new class extends Migration
 
         // 3. Pengumpulan Tugas Mahasiswa
         Schema::create('pengumpulan_tugas', function (Blueprint $table) {
-            $table->bigIncrements('id_pengumpulan');
-            $table->unsignedBigInteger('id_post');
-            $table->unsignedBigInteger('id_mahasiswa');
+            $table->increments('id_pengumpulan');
+            $table->unsignedInteger('id_post');
+            $table->unsignedInteger('id_mahasiswa');
             $table->string('file_path', 255);
             $table->text('catatan_mahasiswa')->nullable();
             $table->timestamp('submitted_at')->useCurrent();
