@@ -44,7 +44,20 @@ class User extends Authenticatable
      */
     public function getBaseRole(): string
     {
-        return $this->attributes['role'] ?? 'mahasiswa';
+        $raw = $this->attributes['role'] ?? 'mahasiswa';
+        if ($raw === 'dosen') {
+            return 'dosen';
+        }
+
+        if (str_contains($raw, 'mahasiswa')) {
+            return 'mahasiswa';
+        }
+
+        if (str_contains($raw, 'asisten_dosen')) {
+            return 'asisten_dosen';
+        }
+
+        return 'mahasiswa';
     }
 
     /**
@@ -79,7 +92,48 @@ class User extends Authenticatable
             }
         }
 
+        if ($value === 'dosen') {
+            return 'dosen';
+        }
+
+        if (str_contains((string) $value, 'mahasiswa')) {
+            return 'mahasiswa';
+        }
+
+        if (str_contains((string) $value, 'asisten_dosen')) {
+            return 'asisten_dosen';
+        }
+
         return $value ?? 'mahasiswa';
+    }
+
+    /**
+     * Mengambil nilai mentah kolom role langsung dari database.
+     */
+    public function getRawRole(): string
+    {
+        return $this->attributes['role'] ?? 'mahasiswa';
+    }
+
+    /**
+     * Mengambil daftar peran dalam bentuk array PHP.
+     */
+    public function getRolesList(): array
+    {
+        $raw = $this->getRawRole();
+        if ($raw === 'dosen') {
+            return ['dosen'];
+        }
+
+        if (str_contains($raw, 'mahasiswa') && str_contains($raw, 'asisten_dosen')) {
+            return ['mahasiswa', 'asisten_dosen'];
+        }
+
+        if (str_contains($raw, 'asisten_dosen')) {
+            return ['asisten_dosen'];
+        }
+
+        return ['mahasiswa'];
     }
 
     /**
@@ -92,12 +146,18 @@ class User extends Authenticatable
 
     /**
      * Memeriksa apakah user benar-benar memiliki status ganda di data akademik
-     * (terdaftar sebagai asisten di asisten_matkul dan sebagai mahasiswa praktikan di peserta_praktikum).
+     * (terdaftar sebagai asisten di asisten_matkul dan sebagai mahasiswa praktikan di peserta_praktikum,
+     * atau memiliki role ganda '(mahasiswa, asisten_dosen)' di database).
      */
     public function hasDualRole(): bool
     {
         if (! $this->canSwitchRole()) {
             return false;
+        }
+
+        $raw = $this->getRawRole();
+        if (str_contains($raw, 'mahasiswa') && str_contains($raw, 'asisten_dosen')) {
+            return true;
         }
 
         $hasAsdosRecord = $this->kelasAsdos()->exists() || $this->getBaseRole() === 'asisten_dosen';

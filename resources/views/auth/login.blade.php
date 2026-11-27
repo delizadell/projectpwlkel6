@@ -16,15 +16,15 @@
         <form action="{{ route('login') }}" method="POST" class="space-y-4">
             @csrf
 
-            <!-- Username / NPM / NIP -->
+            <!-- Username / NPM / NIDN -->
             <div>
-                <label for="username" class="block text-xs font-semibold text-slate-700 mb-1.5">NPM / NIP / Username</label>
+                <label for="username" class="block text-xs font-semibold text-slate-700 mb-1.5">NPM / NIDN / Username</label>
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                         <i class="fa-regular fa-user text-sm"></i>
                     </div>
                     <input type="text" id="username" name="username" required value="{{ old('username') }}" 
-                           placeholder="Masukkan NPM, NIP, atau Username"
+                           placeholder="Masukkan NPM, NIDN, atau Username"
                            class="w-full pl-10 pr-3.5 py-2.5 text-sm bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                 </div>
             </div>

@@ -26,11 +26,30 @@ class AuthController extends Controller
         ]);
 
         $username = trim($request->username);
+        $password = $request->password;
 
-        $user = User::where('username', $username)->first();
+        // Support demo aliases
+        $alias = $username;
+        if ($username === '0412038501') {
+            $alias = 'dosen1';
+        } elseif ($username === 'dosen1') {
+            $alias = '0412038501';
+        } elseif ($username === '210101002') {
+            $alias = 'asprak1';
+        } elseif ($username === 'asprak1') {
+            $alias = '210101002';
+        }
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
-            return back()->withInput()->with('error', 'NPM / NIP / Username atau Kata Sandi yang dimasukkan salah!');
+        $user = User::where('username', $username)->orWhere('username', $alias)->first();
+
+        if (! $user) {
+            return back()->withInput()->with('error', 'NPM / NIDN / Username atau Kata Sandi yang dimasukkan salah!');
+        }
+
+        // Verify password (hash or legacy plain match if testing)
+        $passwordMatches = Hash::check($password, $user->password);
+        if (! $passwordMatches) {
+            return back()->withInput()->with('error', 'NPM / NIDN / Username atau Kata Sandi yang dimasukkan salah!');
         }
 
         Auth::login($user);
@@ -82,11 +101,14 @@ class AuthController extends Controller
 
         $request->validate($rules, $messages);
 
-        User::create([
+        // Jika pendaftar mahasiswa, simpan role sebagai array ganda: (mahasiswa, asisten_dosen)
+        $roleValue = $request->role === 'mahasiswa' ? '(mahasiswa, asisten_dosen)' : 'dosen';
+
+        $user = User::create([
             'nama_lengkap' => trim($request->nama_lengkap),
             'username' => trim($request->username),
             'prodi' => $request->filled('prodi') ? trim($request->prodi) : null,
-            'role' => $request->role,
+            'role' => $roleValue,
             'password' => Hash::make($request->password),
             'created_at' => now(),
         ]);
