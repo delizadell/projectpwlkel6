@@ -10,9 +10,9 @@ return new class extends Migration
     {
         // 1. Supervisi Dosen
         Schema::create('supervisi_dosen', function (Blueprint $table) {
-            $table->bigIncrements('id_supervisi');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_dosen');
+            $table->increments('id_supervisi');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_dosen');
             $table->string('judul', 150);
             $table->text('catatan');
             $table->string('status', 20)->default('terkirim'); // 'terkirim', 'dibaca', 'selesai'
@@ -26,9 +26,9 @@ return new class extends Migration
 
         // 2. Log Aktivitas Asdos
         Schema::create('log_aktivitas_asdos', function (Blueprint $table) {
-            $table->bigIncrements('id_log');
-            $table->unsignedBigInteger('id_matkul');
-            $table->unsignedBigInteger('id_asdos');
+            $table->increments('id_log');
+            $table->unsignedInteger('id_matkul');
+            $table->unsignedInteger('id_asdos');
             $table->string('aktivitas', 255);
             $table->text('keterangan')->nullable();
             $table->timestamp('created_at')->useCurrent();
